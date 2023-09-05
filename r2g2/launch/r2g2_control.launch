@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- This launch file, launches all nodes and programs needed on the desktop to monitor/control the robots-->
+
+<launch>
+  <!-- Start the Control Input node-->
+  <node name="control_input" pkg="r2g2" type="control_input.py" />
+  <!-- Start State Control node-->
+  <node name="joystick_counter" pkg="r2g2" type="state_control.py" />
+
+
+  <!-- Start the joy node so the joystick works automatically after starting up-->
+  <node name="joy_node" pkg="joy" type="joy_node" output="screen">
+    <rosparam file="$(find r2g2)/config/joy_config.yaml" command="load" />
+  </node>
+
+
+</launch>

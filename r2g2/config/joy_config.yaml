@@ -1,0 +1,31 @@
+# joy_config.yaml
+
+# Configuration for Logitech Extreme 3D joystick
+joy_node:
+  deadzone: 0.1
+  autorepeat_rate: 20
+  coalesce_interval: 0.001
+  dev: /dev/input/js0  # Replace X with the appropriate number (usually 0 for the first joystick)
+  axes:
+    - x: 0
+      y: 1
+      deadzone: 0.1
+    - x: 3
+      y: 4
+      deadzone: 0.1
+    - x: 2  # Twist (rudder) axis
+      deadzone: 0.1
+  buttons:
+    - 1  # Trigger button
+    - 2  # Thumb button
+    - 3  # Top left button
+    - 4  # Top right button
+    - 5  # Top middle button
+    - 6  # Left base button
+    - 7  # Right base button
+    - 8  # Bottom left button
+    - 9  # Bottom right button
+    - 10  # Base button 1
+    - 11  # Base button 2
+    - 12  # Base button 3
+    - 13  # Base button 4

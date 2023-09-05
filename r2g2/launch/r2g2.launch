@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- This launch file launches all files which are needed on the robot controller (i.e. the Jetson Nano)-->
+
+<launch>
+  <!-- Start the rosserial Python node -->
+  <node name="rosserial_python0" pkg="rosserial_python" type="serial_node.py">
+    <param name="port" value="/dev/ttyUSB0" />
+    <param name="baud" value="57600" />  <!-- Set the appropriate baud rate for your Arduino -->
+  </node>
+
+  <!-- Start the rosserial Python node -->
+  <node name="rosserial_python1" pkg="rosserial_python" type="serial_node.py">
+    <param name="port" value="/dev/ttyUSB1" />
+    <param name="baud" value="57600" />  <!-- Set the appropriate baud rate for your Arduino -->
+  </node>
+
+  <!-- Start the Control Input node-->
+  <node name="odometr_calculator" pkg="r2g2" type="odometry_calculator.py" />
+
+  
+  <!--Robot Description from URDF-->
+  <param name="robot_description" command="$(find xacro)/xacro --inorder $(find r2g2)/urdf/r2g2.xacro"/>
+
+  <!-- Start TF Publisher -->
+  <node name="robot_tf_publisher" pkg="tf2_ros" type="static_transform_publisher" args="0 0 0 0 0 0 world base_link 100" />
+
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
+
+  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher"/>
+
+  <!-- Start RVIZ -->
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find r2g2)/r2g2.rviz" />
+
+</launch>

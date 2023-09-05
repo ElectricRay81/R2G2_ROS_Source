@@ -1,0 +1,179 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro" name="r2g2">
+
+  <!-- Define the material for visualization -->
+  <material name="gray">
+    <color rgba="0.5 0.5 0.5 1"/>
+  </material>
+
+  <material name="green">
+    <color rgba="0 1 0 1" />
+  </material>
+
+  <material name="blue">
+    <color rgba="0 0 1 1" />
+  </material>
+
+  <material name="red_color">
+    <color rgba="1 0 0 1" />
+  </material>
+
+  <!-- Define the wheel radius and separation distance -->
+  <xacro:property name="base_width" value="0.17"/>
+  <xacro:property name="base_len" value="0.27"/>
+  <xacro:property name="wheel_radius" value="0.035"/>
+  <xacro:property name="base_wheel_gap" value="0.007"/>
+  <xacro:property name="wheel_separation" value="0.17"/>
+  <xacro:property name="wheel_joint_offset" value="0.045"/>
+
+  <!--Base Footprint-->
+  <link name="base_footprint">
+    <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+            <box size="0.001 0.001 0.001" />
+        </geometry>
+    </visual>
+  </link>
+
+  <!-- Base Link -->
+  <link name="base_link">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <box size="${base_len} ${base_width} 0.01"/>
+      </geometry>
+      <material name="gray"/>
+    </visual>
+  </link>
+
+    <!--base_link to base_footprint Joint-->
+  <joint name="base_link_joint" type="fixed">
+    <origin xyz="0 0 0" rpy="0 0 0" />
+    <parent link="base_footprint"/>
+    <child link="base_link" />
+  </joint>
+  
+    <!-- Left Wheel and Link-->
+  <link name="left_wheel_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="${pi/2} 0 0" />
+        <geometry>
+          <cylinder radius="${wheel_radius}" length="0.009"/>
+        </geometry>
+        <material name="gray"/>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="${pi/2} 0 0"/>
+        <geometry>
+          <cylinder radius="${wheel_radius}" length="0.009"/>
+        </geometry>
+    </collision>   
+
+  </link>
+
+  <joint name="left_wheel_joint" type="continuous">
+      <axis xyz="0 1 0" rpy="0 0 0" />
+      <parent link="base_link"/>
+      <child link="left_wheel_link"/>
+      <origin xyz="${wheel_joint_offset} ${((base_width/2)+base_wheel_gap)*1} -0.005" rpy="0 0 0"/>
+  </joint>
+
+    <!-- Right Wheel and Link-->
+  <link name="right_wheel_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="${pi/2} 0 0" />
+        <geometry>
+          <cylinder radius="${wheel_radius}" length="0.009"/>
+        </geometry>
+        <material name="gray"/>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="${pi/2} 0 0"/>
+        <geometry>
+          <cylinder radius="${wheel_radius}" length="0.009"/>
+        </geometry>
+    </collision>   
+  </link>
+
+  <joint name="right_wheel_joint" type="continuous">
+      <axis xyz="0 1 0" rpy="0 0 0" />
+      <parent link="base_link"/>
+      <child link="right_wheel_link"/>
+      <origin xyz="${wheel_joint_offset} ${((base_width/2)+base_wheel_gap)*-1} -0.005" rpy="0 0 0"/>
+  </joint>
+
+  <!-- Right Ultrasone sensor-->
+  <joint name="right_ultrasone_joint" type="fixed">
+      <axis xyz="0 1 0" rpy="${pi/2} 0 0" />
+      <parent link="base_link"/>
+      <child link="right_sonar"/>
+      <origin xyz="${(base_len/2)} ${(base_width/2)*-1} -0.01" rpy="0 0 -0.785"/>
+  </joint>
+
+  <link name="right_sonar">
+    <visual>
+      <origin xyz="0 0 0" rpy="${pi/2} 0 0" />
+        <geometry>
+          <box size = "0.01 0.01 0.01" />
+        </geometry>
+        <material name="green"/>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="${pi/2} 0 0"/>
+        <geometry>
+          <box size = "0.01 0.01 0.01"/>
+        </geometry>
+    </collision> 
+  </link>
+
+  <!-- Center Ultrasone sensor-->
+  <joint name="centre_ultrasone_joint" type="fixed">
+      <axis xyz="0 1 0" rpy="${pi/2} 0 0" />
+      <parent link="base_link"/>
+      <child link="centre_sonar"/>
+      <origin xyz="${(base_len/2)} 0 -0.01" rpy="0 0 0"/>
+  </joint>
+
+  <link name="centre_sonar">
+    <visual>
+      <origin xyz="0 0 0" rpy="${pi/2} 0 0" />
+        <geometry>
+          <box size = "0.01 0.01 0.01" />
+        </geometry>
+        <material name="green"/>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="${pi/2} 0 0"/>
+        <geometry>
+          <box size = "0.01 0.01 0.01"/>
+        </geometry>
+    </collision> 
+  </link>
+
+  <!-- Left Ultrasone sensor-->
+  <joint name="left_ultrasone_joint" type="fixed">
+      <axis xyz="0 1 0" rpy="${pi/2} 0 0" />
+      <parent link="base_link"/>
+      <child link="left_sonar"/>
+      <origin xyz="${(base_len/2)} ${(base_width/2)*1} -0.01" rpy="0 0 0.785"/>
+  </joint>
+
+  <link name="left_sonar">
+    <visual>
+      <origin xyz="0 0 0" rpy="${pi/2} 0 0" />
+        <geometry>
+          <box size = "0.01 0.01 0.01" />
+        </geometry>
+        <material name="green"/>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="${pi/2} 0 0"/>
+        <geometry>
+          <box size = "0.01 0.01 0.01"/>
+        </geometry>
+    </collision> 
+  </link>
+
+
+</robot>
